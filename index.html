@@ -145,11 +145,14 @@ p{margin:0}
 .slide--poster{background:#0a0a0a}
 .poster__art{position:absolute;top:0;bottom:0;right:max(var(--gutter),calc((100vw - var(--max)) / 2 + var(--gutter)));width:auto;height:100%;aspect-ratio:2/3;padding:0;border:0;background:none;cursor:pointer}
 .poster__art picture,.poster__art img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 0}
+.poster__art{overflow:hidden;background:#0a0a0a}
+.poster__art .poster__frame{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;opacity:0}
+.poster__art .poster__frame.is-on{opacity:1}
 .slide--poster .slide__copy{top:0;justify-content:center;padding-bottom:40px}
 .slide--poster .slide__copy > *{max-width:min(560px,48vw)}
 @media (max-width:699.98px){
   .poster__art{inset:0;right:0;width:100%;aspect-ratio:auto}
-  .poster__art picture,.poster__art img{object-position:88% 0}
+  .poster__art picture,.poster__art > picture img{object-position:88% 0}
   .slide--poster::after{content:"";position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(0deg,rgba(8,8,8,.9),rgba(8,8,8,0));pointer-events:none}
   .slide--poster .slide__copy{top:auto;justify-content:flex-end;padding-bottom:78px;z-index:2}
   .slide--poster .slide__copy > *{max-width:none}
@@ -662,7 +665,7 @@ p{margin:0}
     },
     /* Slideshow. 'trio' slides show three pieces side by side ('promo' in place of an id shows the offer card). */
     hero: [
-      { type: 'poster', img: 'assets/promo/bf-poster.webp', phone: 'assets/promo/bf-poster-m.webp', piece: 'pb-graphic-tee-white', alt: 'Black Friday at X-SEPTION: up to 70% off selected collections. Psycho Bunny graphic tee.' },
+      { type: 'poster', img: 'assets/promo/bf-poster.webp', phone: 'assets/promo/bf-poster-m.webp', piece: 'pb-graphic-tee-white', alt: 'Black Friday at X-SEPTION: up to 70% off selected collections. Psycho Bunny graphic tee.', flip: 0.7 },
       { type: 'trio', ids: ['agv-limited-edition-tee-white', 'agv-bear-tee-white', 'agv-panther-tee-white'], kicker: 'Avenue George V Paris tees', title: '50% <em>off</em>', sub: 'Now <strong>R1 600</strong> <s>R3 200</s> · both boutiques, while stock lasts' },
       { type: 'trio', ids: ['pb-wave-knit-set-navy', 'pb-knit-polo-navy', 'pb-palm-set-black'], kicker: 'Psycho Bunny', title: 'Up to <em>70% off</em>', sub: 'Selected knits, sets and pants · both boutiques' },
       { type: 'trio', ids: ['agv-panther-graffiti-tee-black', 'jg-derby-tan', 'promo'], kicker: 'Selected collections', title: 'Up to <em>70% off</em>', sub: 'Avenue George V Paris, Psycho Bunny and Jo Ghost' },
@@ -672,7 +675,7 @@ p{margin:0}
     /* Current campaign: headline, ticker, and the label on sale pieces without a set price */
     offer: { label: 'Black Friday', title: 'Up to <em>70% off</em>', line: 'Selected collections', badge: 'Up to 70% off', banner: 'assets/promo/bf-banner.webp',
              ticker: 'Black Friday · <b>up to 70% off</b> selected collections · Avenue George V Paris tees now <b>R1 600</b> (was R3 200) · Psycho Bunny &amp; Jo Ghost on special · Nelson Mandela Square &amp; Eastgate' },
-    slideSeconds: 6,
+    slideSeconds: 6,          /* a 'flip' slide stays up for one full run of its pictures instead */
     /* Shop by category tiles: group -> piece whose photo is used */
     tiles: { tees: 'agv-panther-graffiti-tee-black', shirts: 'floral-shirt-cobalt', knitwear: 'pb-striped-knit-shirt', sets: 'pb-wave-knit-set-navy', jackets: 'milestone-jacket-orange', jeans: 'rr-jeans-wing', pants: 'alberto-pants-sand', shoes: 'jg-penny-loafer-navy', boots: 'jg-brogue-boot-cognac', sneakers: 'jg-sneaker-navy' },
     /* Lookbook mosaic: piece id, optionally #n for its nth photo */
@@ -976,8 +979,16 @@ p{margin:0}
           s.phone ? el('source', { srcset: s.img, media: '(min-width: 700px)' }) : null,
           el('img', { src: s.phone || s.img, alt: s.alt || '', decoding: 'async', fetchpriority: idx === 0 ? 'high' : null })
         ]));
-        if (pp) art.addEventListener('click', function () { openPiece(pp, art); });
-        slide = el('article', { 'class': 'slide slide--poster', 'aria-roledescription': 'slide' }, [
+        var frames = [{ it: pp, img: null }];
+        if (s.flip) state.items.forEach(function (it) { if (it.sale && /-0\.webp$/.test(it.imgs[0])) frames.push({ it: it, img: small(it.imgs[0]) }); });
+        frames.slice(1).forEach(function (f) {
+          var im = el('img', { 'class': 'poster__frame', src: f.img, alt: '', decoding: 'async' });
+          art.appendChild(im);
+          f.el = im;
+        });
+        art.addEventListener('click', function () { var f = frames[art._frame || 0]; if (f && f.it) openPiece(f.it, art); });
+        if (frames.length > 1) { art._frames = frames; art._step = s.flip; }
+        slide = el('article', { 'class': 'slide slide--poster', 'aria-roledescription': 'slide', 'data-seconds': frames.length > 1 ? String(Math.ceil(frames.length * s.flip)) : null }, [
           art,
           el('div', { 'class': 'wrap slide__copy' }, [
             el('p', { 'class': 'slide__kicker' }, [el('b', null, o.label), o.line]),
@@ -1019,17 +1030,33 @@ p{margin:0}
     });
     dotsBox.replaceChildren.apply(dotsBox, dots);
     nav.hidden = n < 2;
+    var flipTimer = 0;
+    function flip() {
+      window.clearInterval(flipTimer);
+      var art = $('.poster__art', slides[cur]);
+      $$('.poster__art').forEach(function (a) { if (a !== art) { a._frame = 0; (a._frames || []).forEach(function (f) { if (f.el) f.el.classList.remove('is-on'); }); } });
+      if (!art || !art._frames || paused || reduced) return;
+      flipTimer = window.setInterval(function () {
+        if (hovering || document.hidden) return;
+        var fr = art._frames, k = ((art._frame || 0) + 1) % fr.length;
+        fr.forEach(function (f, j) { if (f.el) f.el.classList.toggle('is-on', j === k); });
+        art._frame = k;
+        var it = fr[k].it;
+        art.setAttribute('aria-label', it ? 'View ' + [it.brand, title(it)].filter(Boolean).join(' ') : CONFIG.offer.label);
+      }, art._step * 1000);
+    }
     function go(i) {
       cur = (i + n) % n;
       slides.forEach(function (s, k) { s.classList.toggle('is-on', k === cur); s.setAttribute('aria-hidden', String(k !== cur)); s.inert = k !== cur; });
       dots.forEach(function (d, k) { d.setAttribute('aria-current', String(k === cur)); });
       schedule();
+      flip();
     }
     function schedule() {
       window.clearTimeout(timer);
-      if (n > 1 && !paused && !hovering && !document.hidden) timer = window.setTimeout(function () { go(cur + 1); }, CONFIG.slideSeconds * 1000);
+      if (n > 1 && !paused && !hovering && !document.hidden) timer = window.setTimeout(function () { go(cur + 1); }, (Number(slides[cur].getAttribute('data-seconds')) || CONFIG.slideSeconds) * 1000);
     }
-    function setPaused(p) { paused = p; show.classList.toggle('is-paused', p); playBtn.setAttribute('aria-label', p ? 'Play slideshow' : 'Pause slideshow'); schedule(); }
+    function setPaused(p) { paused = p; show.classList.toggle('is-paused', p); playBtn.setAttribute('aria-label', p ? 'Play slideshow' : 'Pause slideshow'); schedule(); flip(); }
     $$('[data-step]', nav).forEach(function (b) { b.addEventListener('click', function () { go(cur + Number(b.getAttribute('data-step'))); }); });
     playBtn.addEventListener('click', function () { setPaused(!paused); });
     show.addEventListener('mouseenter', function () { hovering = true; schedule(); });
