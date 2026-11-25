@@ -196,6 +196,40 @@ p{margin:0}
 .ticker b{color:var(--gold);font-weight:600}
 @keyframes ticker{to{transform:translateX(-50%)}}
 
+/* Black Friday showcase: the up-to-70% pieces */
+.deal{position:relative;overflow:hidden;padding-block:clamp(2.75rem,6vw,4.5rem);background:radial-gradient(90% 70% at 85% 0%,#3b1512 0%,rgba(59,21,18,0) 60%),radial-gradient(70% 60% at 0% 100%,#2c2312 0%,rgba(44,35,18,0) 60%),#0b0b0b;color:var(--linen)}
+.deal__head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem 2rem;margin-bottom:clamp(1.25rem,3vw,2rem)}
+.deal__kicker{display:inline-flex;align-items:center;gap:.6rem;font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:rgba(244,241,235,.75)}
+.deal__kicker{flex-wrap:wrap}
+.deal__kicker b{white-space:nowrap;padding:.28rem .65rem;border-radius:999px;background:#C8231A;color:#fff;font-weight:600;letter-spacing:.14em}
+.deal__title{margin-top:.55rem;font-family:var(--font-display);font-size:clamp(3rem,9vw,6.4rem);line-height:.9;letter-spacing:-.01em}
+.deal__title em{font-style:italic;color:var(--gold)}
+.deal__sub{max-width:520px;margin-top:.7rem;color:rgba(244,241,235,.8)}
+.deal__all span{opacity:.7}
+.deal__rail{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;margin-inline:calc(-1 * var(--gutter));padding:4px var(--gutter) 6px}
+.deal__rail::-webkit-scrollbar{display:none}
+@media (min-width:1100px){.deal__rail{grid-auto-flow:row;grid-template-columns:repeat(5,1fr);overflow:visible;margin-inline:0;padding-inline:0;gap:18px}}
+.dcard{position:relative;display:flex;flex-direction:column;gap:.7rem;scroll-snap-align:start;padding:0;border:0;background:none;color:inherit;text-align:left;cursor:pointer}
+.dcard__media{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;border-radius:14px;background:#1a1917;box-shadow:0 18px 40px rgba(0,0,0,.45);outline:1px solid rgba(201,169,97,.25);outline-offset:-1px;transition:transform .5s cubic-bezier(.2,.7,.2,1),box-shadow .5s,outline-color .3s}
+.dcard__media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 25%;transition:opacity .45s ease,transform 1s cubic-bezier(.2,.7,.2,1)}
+.dcard__media img.is-fit{object-fit:contain;padding:4%;background:#fff}
+.dcard__media img.is-alt{opacity:0}
+.dcard__media::after{content:"";position:absolute;inset:auto 0 0;height:38%;background:linear-gradient(0deg,rgba(8,8,8,.7),rgba(8,8,8,0));pointer-events:none}
+@media (hover:hover){.dcard:hover .dcard__media{transform:translateY(-4px);box-shadow:0 26px 60px rgba(0,0,0,.6);outline-color:var(--gold)}.dcard:hover .dcard__media img.is-alt{opacity:1}.dcard:hover .dcard__media img:not(.is-alt){transform:scale(1.05)}}
+.dcard__tag{position:absolute;left:12px;top:12px;z-index:2;display:flex;flex-direction:column;align-items:flex-start;padding:.45rem .65rem .5rem;border-radius:10px;background:#C8231A;color:#fff;box-shadow:0 6px 18px rgba(200,35,26,.4);line-height:1}
+.dcard__tag small{font-size:.55rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;opacity:.9}
+.dcard__tag strong{margin-top:.2rem;font-family:var(--font-display);font-weight:400;font-size:1.65rem;letter-spacing:-.01em}
+.dcard__tag strong i{font-style:normal;font-size:.8rem;margin-left:.15rem;font-family:var(--font-body);font-weight:600}
+.dcard__ask{position:absolute;left:12px;right:12px;bottom:12px;z-index:2;display:flex;align-items:center;justify-content:center;gap:.45rem;min-height:40px;border-radius:999px;background:rgba(244,241,235,.95);color:var(--obsidian);font-size:.64rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.dcard__ask .ui{width:16px;height:16px}
+.dcard__body{display:flex;flex-direction:column;gap:.1rem}
+.dcard__brand{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.dcard__name{font-family:var(--font-display);font-size:1.2rem;line-height:1.15}
+/* Up-to-70% badge on catalogue cards */
+.badge--deal{background:#C8231A;color:#fff;font-size:.62rem;padding:.25rem .6rem;box-shadow:0 4px 12px rgba(200,35,26,.35)}
+.prod--deal .prod__media{outline:1px solid rgba(200,35,26,.35);outline-offset:-1px}
+.prod--deal .prod__meta{color:#B4271E;font-weight:600}
+
 /* Shop by category */
 .cats{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);gap:12px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);scroll-snap-type:x mandatory}
 .cats::-webkit-scrollbar{display:none}
@@ -409,6 +443,20 @@ p{margin:0}
   <div class="ticker__track" aria-hidden="true" id="ticker"></div>
 </div>
 
+<section class="deal" id="deal" aria-labelledby="deal-title" hidden>
+  <div class="wrap">
+    <div class="deal__head">
+      <div>
+        <p class="deal__kicker"><b>Black Friday</b> Psycho Bunny &amp; Jo Ghost</p>
+        <h2 class="deal__title" id="deal-title">Up to <em>70% off</em></h2>
+        <p class="deal__sub">Selected pieces at both boutiques while stock lasts. Tap a piece and ask on WhatsApp for your Black Friday price and size.</p>
+      </div>
+      <a class="btn btn--gold deal__all" href="?cat=sale#catalogue" data-cat-link="sale">Shop all Black Friday <span id="dealCount"></span></a>
+    </div>
+    <div class="deal__rail" id="dealRail" role="list"></div>
+  </div>
+</section>
+
 <section class="section" aria-labelledby="cats-title">
   <div class="wrap">
     <div class="section__head">
@@ -594,17 +642,17 @@ p{margin:0}
     {"id": "agv-bear-tee-black-red", "name": "Bear back-print tee, black & red", "brand": "Avenue George V Paris", "group": "tees", "line": "casual", "price": 1600, "was": 3200, "sale": "Black Friday", "imgs": ["assets/products/agv-bear-tee-black-red-1.webp"], "shape": ["tall"]},
     {"id": "agv-panther-graffiti-tee-black", "name": "Pink Panther graffiti tee, black", "brand": "Avenue George V Paris", "group": "tees", "line": "casual", "price": 1600, "was": 3200, "sale": "Black Friday", "imgs": ["assets/products/agv-panther-graffiti-tee-black-1.webp"], "shape": ["tall"]},
     {"id": "agv-panther-tee-black", "name": "Pink Panther tee, black", "brand": "Avenue George V Paris", "group": "tees", "line": "casual", "imgs": ["assets/products/agv-panther-tee-black-1.webp", "assets/products/agv-panther-tee-black-2.webp"], "shape": ["tall", "tall"]},
-    {"id": "pb-wave-knit-set-navy", "name": "Wave knit shirt & shorts set, navy", "brand": "Psycho Bunny", "group": "sets", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-wave-knit-set-navy-0.webp", "assets/products/pb-wave-knit-set-navy-1.webp", "assets/products/pb-wave-knit-set-navy-2.webp", "assets/products/pb-wave-knit-set-navy-3.webp"], "shape": ["tall", "tall", "tall", "tall"]},
-    {"id": "pb-wave-knit-set-cream", "name": "Wave knit shirt & shorts set, cream & orange", "brand": "Psycho Bunny", "group": "sets", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-wave-knit-set-cream-0.webp", "assets/products/pb-wave-knit-set-cream-1.webp"], "shape": ["tall", "tall"]},
-    {"id": "pb-palm-set-black", "name": "Palm embroidered shirt & shorts set, black", "brand": "Psycho Bunny", "group": "sets", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-palm-set-black-0.webp", "assets/products/pb-palm-set-black-1.webp", "assets/products/pb-palm-set-black-2.webp", "assets/products/pb-palm-set-black-3.webp"], "shape": ["tall", "tall", "tall", "tall"]},
-    {"id": "pb-graphic-tee-white", "name": "Back-print graphic tee, white", "brand": "Psycho Bunny", "group": "tees", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-graphic-tee-white-0.webp", "assets/products/pb-graphic-tee-white-1.webp"], "shape": ["tall", "tall"]},
+    {"id": "pb-wave-knit-set-navy", "name": "Wave knit shirt & shorts set, navy", "brand": "Psycho Bunny", "group": "sets", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-wave-knit-set-navy-1.webp", "assets/products/pb-wave-knit-set-navy-0.webp", "assets/products/pb-wave-knit-set-navy-2.webp", "assets/products/pb-wave-knit-set-navy-3.webp"], "shape": ["tall", "tall", "tall", "tall"]},
+    {"id": "pb-wave-knit-set-cream", "name": "Wave knit shirt & shorts set, cream & orange", "brand": "Psycho Bunny", "group": "sets", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-wave-knit-set-cream-1.webp", "assets/products/pb-wave-knit-set-cream-0.webp"], "shape": ["tall", "tall"]},
+    {"id": "pb-palm-set-black", "name": "Palm embroidered shirt & shorts set, black", "brand": "Psycho Bunny", "group": "sets", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-palm-set-black-1.webp", "assets/products/pb-palm-set-black-0.webp", "assets/products/pb-palm-set-black-2.webp", "assets/products/pb-palm-set-black-3.webp"], "shape": ["tall", "tall", "tall", "tall"]},
+    {"id": "pb-graphic-tee-white", "name": "Back-print graphic tee, white", "brand": "Psycho Bunny", "group": "tees", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-graphic-tee-white-1.webp", "assets/products/pb-graphic-tee-white-0.webp"], "shape": ["tall", "tall"]},
     {"id": "pb-bunny-tee-blush", "name": "Bunny badge tee, blush", "brand": "Psycho Bunny", "group": "tees", "line": "casual", "imgs": ["assets/products/pb-bunny-tee-blush-1.webp"], "shape": ["tall"]},
-    {"id": "pb-knit-polo-navy", "name": "Textured knit polo, navy", "brand": "Psycho Bunny", "group": "knitwear", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-knit-polo-navy-0.webp", "assets/products/pb-knit-polo-navy-1.webp", "assets/products/pb-knit-polo-navy-2.webp"], "shape": ["tall", "tall", "tall"]},
+    {"id": "pb-knit-polo-navy", "name": "Textured knit polo, navy", "brand": "Psycho Bunny", "group": "knitwear", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-knit-polo-navy-1.webp", "assets/products/pb-knit-polo-navy-0.webp", "assets/products/pb-knit-polo-navy-2.webp"], "shape": ["tall", "tall", "tall"]},
     {"id": "pb-striped-knit-shirt", "name": "Striped knit camp shirt, sky & navy", "brand": "Psycho Bunny", "group": "knitwear", "line": "casual", "imgs": ["assets/products/pb-striped-knit-shirt-1.webp"], "shape": ["tall"]},
-    {"id": "pb-open-collar-knit-white", "name": "Open-collar knit polo, white", "brand": "Psycho Bunny", "group": "knitwear", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-open-collar-knit-white-0.webp", "assets/products/pb-open-collar-knit-white-1.webp", "assets/products/pb-open-collar-knit-white-2.webp"], "shape": ["tall", "tall", "tall"]},
+    {"id": "pb-open-collar-knit-white", "name": "Open-collar knit polo, white", "brand": "Psycho Bunny", "group": "knitwear", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-open-collar-knit-white-1.webp", "assets/products/pb-open-collar-knit-white-0.webp", "assets/products/pb-open-collar-knit-white-2.webp"], "shape": ["tall", "tall", "tall"]},
     {"id": "pb-open-collar-knit-ice", "name": "Open-collar knit polo, ice grey", "brand": "Psycho Bunny", "group": "knitwear", "line": "casual", "imgs": ["assets/products/pb-open-collar-knit-ice-1.webp"], "shape": ["tall"]},
-    {"id": "pb-knit-shirt-black", "name": "Knit button shirt, black", "brand": "Psycho Bunny", "group": "knitwear", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-knit-shirt-black-0.webp", "assets/products/pb-knit-shirt-black-1.webp", "assets/products/pb-knit-shirt-black-2.webp"], "shape": ["tall", "tall", "tall"]},
-    {"id": "pb-pants-grey", "name": "Tech pants, grey", "brand": "Psycho Bunny", "group": "pants", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-pants-grey-0.webp", "assets/products/pb-pants-grey-1.webp", "assets/products/pb-pants-grey-2.webp"], "shape": ["tall", "wide", "wide"], "ig": "https://www.instagram.com/p/Dc6jAVDiBAA/"},
+    {"id": "pb-knit-shirt-black", "name": "Knit button shirt, black", "brand": "Psycho Bunny", "group": "knitwear", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-knit-shirt-black-1.webp", "assets/products/pb-knit-shirt-black-0.webp", "assets/products/pb-knit-shirt-black-2.webp"], "shape": ["tall", "tall", "tall"]},
+    {"id": "pb-pants-grey", "name": "Tech pants, grey", "brand": "Psycho Bunny", "group": "pants", "line": "casual", "sale": "Black Friday", "imgs": ["assets/products/pb-pants-grey-1.webp", "assets/products/pb-pants-grey-0.webp", "assets/products/pb-pants-grey-2.webp"], "shape": ["wide", "tall", "wide"], "ig": "https://www.instagram.com/p/Dc6jAVDiBAA/"},
     {"id": "pb-pants-navy", "name": "Tech pants, navy & lime", "brand": "Psycho Bunny", "group": "pants", "line": "casual", "imgs": ["assets/products/pb-pants-navy-1.webp"], "shape": ["wide"]},
     {"id": "pb-pants-blue", "name": "Tech pants, slate blue", "brand": "Psycho Bunny", "group": "pants", "line": "casual", "imgs": ["assets/products/pb-pants-blue-1.webp", "assets/products/pb-pants-blue-2.webp"], "shape": ["wide", "wide"]},
     {"id": "pb-pants-black", "name": "Tech pants, black & orange", "brand": "Psycho Bunny", "group": "pants", "line": "casual", "imgs": ["assets/products/pb-pants-black-1.webp", "assets/products/pb-pants-black-2.webp"], "shape": ["wide", "wide"]},
@@ -619,14 +667,14 @@ p{margin:0}
     {"id": "paciotti-leather-sneaker-black", "name": "Leather sneakers, black", "brand": "Cesare Paciotti", "group": "sneakers", "line": "any", "imgs": ["assets/products/paciotti-leather-sneaker-black-1.webp", "assets/products/paciotti-leather-sneaker-black-2.webp"], "shape": ["wide", "wide"], "ig": "https://www.instagram.com/p/Db2iNypiUge/"},
     {"id": "paciotti-4us-sneaker", "name": "4US sneakers, white & navy", "brand": "Cesare Paciotti", "group": "sneakers", "line": "casual", "imgs": ["assets/products/paciotti-4us-sneaker-1.webp"], "shape": ["wide"], "ig": "https://www.instagram.com/p/DYWOLDViNO_/"},
     {"id": "r2-zip-knit-polo-mint", "name": "Textured zip knit polo, mint", "brand": "R2 Amsterdam", "group": "knitwear", "line": "casual", "imgs": ["assets/products/r2-zip-knit-polo-mint-1.webp", "assets/products/r2-zip-knit-polo-mint-2.webp", "assets/products/r2-zip-knit-polo-mint-3.webp"], "shape": ["wide", "wide", "wide"], "ig": "https://www.instagram.com/p/Dax86gKCJ49/"},
-    {"id": "jg-derby-tan", "name": "Perforated suede derby, tan", "brand": "Jo Ghost", "group": "shoes", "line": "formal", "sale": "Black Friday", "imgs": ["assets/products/jg-derby-tan-0.webp", "assets/products/jg-derby-tan-1.webp", "assets/products/jg-derby-tan-2.webp", "assets/products/jg-derby-tan-3.webp"], "shape": ["tall", "wide", "square", "wide"]},
+    {"id": "jg-derby-tan", "name": "Perforated suede derby, tan", "brand": "Jo Ghost", "group": "shoes", "line": "formal", "sale": "Black Friday", "imgs": ["assets/products/jg-derby-tan-1.webp", "assets/products/jg-derby-tan-0.webp", "assets/products/jg-derby-tan-2.webp", "assets/products/jg-derby-tan-3.webp"], "shape": ["wide", "tall", "square", "wide"]},
     {"id": "jg-derby-black", "name": "Perforated suede derby, black", "brand": "Jo Ghost", "group": "shoes", "line": "formal", "imgs": ["assets/products/jg-derby-black-1.webp", "assets/products/jg-derby-black-2.webp"], "shape": ["wide", "wide"]},
     {"id": "jg-croc-oxford-black", "name": "Croc-embossed oxford, black", "brand": "Jo Ghost", "group": "shoes", "line": "formal", "imgs": ["assets/products/jg-croc-oxford-black-1.webp", "assets/products/jg-croc-oxford-black-2.webp"], "shape": ["wide", "wide"]},
     {"id": "jg-penny-loafer-navy", "name": "Penny loafer, navy", "brand": "Jo Ghost", "group": "shoes", "line": "formal", "imgs": ["assets/products/jg-penny-loafer-navy-1.webp", "assets/products/jg-penny-loafer-navy-2.webp", "assets/products/jg-penny-loafer-navy-3.webp"], "shape": ["wide", "wide", "wide"]},
     {"id": "jg-sneaker-taupe", "name": "Leather sneakers, taupe", "brand": "Jo Ghost", "group": "sneakers", "line": "casual", "imgs": ["assets/products/jg-sneaker-taupe-1.webp", "assets/products/jg-sneaker-taupe-2.webp", "assets/products/jg-sneaker-taupe-3.webp"], "shape": ["wide", "wide", "wide"]},
     {"id": "jg-sneaker-navy", "name": "Leather sneakers, navy", "brand": "Jo Ghost", "group": "sneakers", "line": "casual", "imgs": ["assets/products/jg-sneaker-navy-1.webp", "assets/products/jg-sneaker-navy-2.webp"], "shape": ["square", "square"]},
     {"id": "jg-suede-boot-brown", "name": "Suede zip ankle boot, brown", "brand": "Jo Ghost", "group": "boots", "line": "any", "imgs": ["assets/products/jg-suede-boot-brown-1.webp", "assets/products/jg-suede-boot-brown-2.webp", "assets/products/jg-suede-boot-brown-3.webp"], "shape": ["wide", "wide", "tall"]},
-    {"id": "jg-croc-boot-navy", "name": "Croc-embossed ankle boot, navy", "brand": "Jo Ghost", "group": "boots", "line": "formal", "sale": "Black Friday", "imgs": ["assets/products/jg-croc-boot-navy-0.webp", "assets/products/jg-croc-boot-navy-1.webp", "assets/products/jg-croc-boot-navy-2.webp", "assets/products/jg-croc-boot-navy-3.webp", "assets/products/jg-croc-boot-navy-4.webp"], "shape": ["tall", "square", "wide", "wide", "wide"]},
+    {"id": "jg-croc-boot-navy", "name": "Croc-embossed ankle boot, navy", "brand": "Jo Ghost", "group": "boots", "line": "formal", "sale": "Black Friday", "imgs": ["assets/products/jg-croc-boot-navy-1.webp", "assets/products/jg-croc-boot-navy-0.webp", "assets/products/jg-croc-boot-navy-2.webp", "assets/products/jg-croc-boot-navy-3.webp", "assets/products/jg-croc-boot-navy-4.webp"], "shape": ["square", "tall", "wide", "wide", "wide"]},
     {"id": "jg-brogue-boot-cognac", "name": "Brogue zip boot, cognac", "brand": "Jo Ghost", "group": "boots", "line": "any", "imgs": ["assets/products/jg-brogue-boot-cognac-1.webp", "assets/products/jg-brogue-boot-cognac-2.webp", "assets/products/jg-brogue-boot-cognac-3.webp", "assets/products/jg-brogue-boot-cognac-4.webp", "assets/products/jg-brogue-boot-cognac-5.webp"], "shape": ["tall", "square", "wide", "wide", "wide"]},
     {"id": "jg-buckle-boot-brown", "name": "Croc buckle boot, dark brown", "brand": "Jo Ghost", "group": "boots", "line": "any", "imgs": ["assets/products/jg-buckle-boot-brown-1.webp", "assets/products/jg-buckle-boot-brown-2.webp"], "shape": ["tall", "wide"]},
     {"id": "rr-jeans-wing", "name": "Wing-pocket jeans, mid wash", "brand": "Rock Revival", "group": "jeans", "line": "casual", "imgs": ["assets/products/rr-jeans-wing-1.webp", "assets/products/rr-jeans-wing-2.webp"], "shape": ["square", "wide"]},
@@ -768,6 +816,7 @@ p{margin:0}
       sale: price && was > price ? clean(o.sale || 'Sale', 30) : clean(o.sale, 30)
     };
   }
+  function rank(d) { return d.sale ? (d.was ? 1 : 0) : 2; }   /* up-to-70% pieces, then priced sale pieces, then the rest */
   function loadProducts() {
     var manual = PRODUCTS.map(normalise).filter(Boolean);
     function merge(synced) {
@@ -775,7 +824,7 @@ p{margin:0}
       manual.forEach(function (d) { if (d.ig) igSeen[d.ig] = 1; });
       manual.concat(synced.filter(function (d) { return !igSeen[d.ig]; })).forEach(function (d) { if (!seen[d.id]) { seen[d.id] = 1; out.push(d); } });
       return out.map(function (d, i) { return { d: d, i: i }; })
-        .sort(function (a, b) { return ((a.d.status === 'sold') - (b.d.status === 'sold')) || ((!!b.d.sale) - (!!a.d.sale)) || (a.i - b.i); })
+        .sort(function (a, b) { return ((a.d.status === 'sold') - (b.d.status === 'sold')) || (rank(a.d) - rank(b.d)) || (a.i - b.i); })
         .map(function (x) { return x.d; });
     }
     if (!window.fetch || location.protocol === 'file:') return Promise.resolve(merge([]));
@@ -789,12 +838,12 @@ p{margin:0}
       .catch(function () { return merge([]); });
   }
   /* 'id' or 'id#2' -> { it, src } */
+  function campaignImg(it) { for (var i = 0; i < it.imgs.length; i++) if (/-0\.webp$/.test(it.imgs[i])) return it.imgs[i]; return ''; }
+  function upTo(it) { return !!it.sale && !it.was; }
   function pick(ref) {
     var parts = String(ref).split('#'), it = state.byId[parts[0]];
     if (!it || !it.imgs.length) return null;
     var n = Math.min(Math.max((parseInt(parts[1], 10) || 1) - 1, 0), it.imgs.length - 1);
-    /* Campaign pictures (NAME-0.webp) lead the catalogue; slides, tiles and the lookbook use the clean photo */
-    if (!parts[1] && /-0\.webp$/.test(it.imgs[0]) && it.imgs[1]) n = 1;
     return { it: it, src: it.imgs[n], shape: it.shape[n] || '' };
   }
 
@@ -827,15 +876,15 @@ p{margin:0}
     media.appendChild(main);
     if (it.imgs[1]) { media.classList.add('has-alt'); media.appendChild(img(small(it.imgs[1]), '', 'is-alt ' + fitCls(it, 1))); }
     var badges = el('span', { 'class': 'badges' });
-    if (it.sale) badges.appendChild(el('span', { 'class': 'badge badge--sale' }, it.was ? '-' + pct(it) + '%' : CONFIG.offer.badge));
+    if (it.sale) badges.appendChild(el('span', { 'class': 'badge ' + (it.was ? 'badge--sale' : 'badge--deal') }, it.was ? '-' + pct(it) + '%' : CONFIG.offer.badge));
     if (it.status) badges.appendChild(el('span', { 'class': 'badge badge--' + it.status }, STATUS_LABEL[it.status]));
     if (badges.childNodes.length) media.appendChild(badges);
-    var a = el('a', { 'class': 'prod' + (it.status === 'sold' ? ' prod--sold' : ''), href: '?piece=' + enc(it.id) }, [
+    var a = el('a', { 'class': 'prod' + (it.status === 'sold' ? ' prod--sold' : '') + (upTo(it) ? ' prod--deal' : ''), href: '?piece=' + enc(it.id) }, [
       media,
       el('span', { 'class': 'prod__body' }, [
         it.brand ? el('span', { 'class': 'prod__brand' }, it.brand) : null,
         el('span', { 'class': 'prod__name' }, title(it)),
-        el('span', { 'class': 'prod__meta' }, it.sale ? it.sale : metaText(it)),
+        el('span', { 'class': 'prod__meta' }, upTo(it) ? it.sale + ' · ' + CONFIG.offer.badge : it.sale ? it.sale : metaText(it)),
         priceEl(it)
       ])
     ]);
@@ -924,6 +973,29 @@ p{margin:0}
     });
   }
 
+  function dealRail() {
+    var deals = state.items.filter(function (it) { return upTo(it) && it.status !== 'sold' && it.imgs.length; });
+    if (!deals.length) return;
+    var pctTxt = (CONFIG.offer.badge.match(/\d+/) || ['70'])[0];
+    var box = $('#dealRail');
+    deals.forEach(function (it) {
+      var media = el('span', { 'class': 'dcard__media' }, [
+        img(small(it.imgs[0]), [it.brand, title(it)].filter(Boolean).join(' '), fitCls(it, 0) || null),
+        campaignImg(it) ? img(small(campaignImg(it)), '', 'is-alt') : null,
+        html('span', { 'class': 'dcard__tag', 'aria-hidden': 'true' }, '<small>Up to</small><strong>' + pctTxt + '<i>% off</i></strong>'),
+        el('span', { 'class': 'dcard__ask' }, [uiIcon('u-chat'), 'Ask for price'])
+      ]);
+      var b = el('button', { type: 'button', 'class': 'dcard', role: 'listitem', 'aria-label': [it.brand, title(it)].filter(Boolean).join(' ') + ', ' + CONFIG.offer.badge + '. Ask for price' }, [
+        media,
+        el('span', { 'class': 'dcard__body' }, [it.brand ? el('span', { 'class': 'dcard__brand' }, it.brand) : null, el('span', { 'class': 'dcard__name' }, title(it))])
+      ]);
+      b.addEventListener('click', function () { openPiece(it, b); });
+      box.appendChild(b);
+    });
+    $('#dealCount').textContent = '(' + state.items.filter(function (it) { return it.sale; }).length + ')';
+    $('#deal').hidden = false;
+  }
+
   function lookbook() {
     var box = $('#mosaic');
     CONFIG.lookbook.forEach(function (ref, i) {
@@ -980,7 +1052,7 @@ p{margin:0}
           el('img', { src: s.phone || s.img, alt: s.alt || '', decoding: 'async', fetchpriority: idx === 0 ? 'high' : null })
         ]));
         var frames = [{ it: pp, img: null }];
-        if (s.flip) state.items.forEach(function (it) { if (it.sale && /-0\.webp$/.test(it.imgs[0])) frames.push({ it: it, img: small(it.imgs[0]) }); });
+        if (s.flip) state.items.forEach(function (it) { var c = it.sale && campaignImg(it); if (c) frames.push({ it: it, img: small(c) }); });
         frames.slice(1).forEach(function (f) {
           var im = el('img', { 'class': 'poster__frame', src: f.img, alt: '', decoding: 'async' });
           art.appendChild(im);
@@ -1197,6 +1269,7 @@ p{margin:0}
     try { slideshow(); } catch (e) { $('#show').hidden = true; }
     var grid = $('#grid');
     grid.replaceChildren.apply(grid, items.map(card));
+    dealRail();
     categoryTiles();
     lookbook();
     brandWall();
